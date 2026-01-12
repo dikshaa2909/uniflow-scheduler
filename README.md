@@ -28,45 +28,52 @@ This project strictly follows **Next.js App Router** best practices, separating 
 
 ```mermaid
 flowchart TB
-    %% Styling Definitions
-    classDef user fill:#000000,stroke:#333,stroke-width:2px,color:#fff;
-    classDef client fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e;
-    classDef server fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d;
-    classDef storage fill:#fdf4ff,stroke:#d946ef,stroke-width:2px,shape:cylinder,color:#701a75;
-    classDef logic fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#7c2d12;
-
-    User((User)) ::: user
+    User((User))
     
     User -->|1. Visits| LandingPage["Landing Page (/)"]
     User -->|2. Launches| App["Scheduler App (/app)"]
 
     subgraph Server["🖥️ Server Side (Next.js)"]
         direction TB
-        Layout[Root Layout]:::server
-        Meta["Metadata & SEO"]:::server
+        Layout[Root Layout]
+        Meta["Metadata & SEO"]
     end
 
     subgraph Client["⚡ Client Side (React)"]
         direction TB
-        Scheduler[SchedulerApp Component]:::client
-        State["State Manager"]:::client
-        DnD[Dnd-Kit Context]:::client
+        Scheduler[SchedulerApp Component]
+        State["State Manager"]
+        DnD[Dnd-Kit Context]
+        LogicEngine["Logic Engine Interface"]
         
         Scheduler --> State
-        State -.->|Auto-Save| LocalStorage[("Browser LocalStorage")]:::storage
+        State -.->|Auto-Save| LocalStorage[("Browser LocalStorage")]
         DnD -->|Drag Events| LogicEngine
     end
 
     subgraph Logic["🧠 Logic Engine"]
         direction TB
-        Validation["Rule Validation\n(Business Hours, Conflicts)"]:::logic
-        Tetris["Tetris Algorithm\n(Visual Overlaps)"]:::logic
-        SmartAdd["Smart Slot Finder\n(Auto-Scheduling)"]:::logic
+        Validation["Rule Validation\n(Business Hours, Conflicts)"]
+        Tetris["Tetris Algorithm\n(Visual Overlaps)"]
+        SmartAdd["Smart Slot Finder\n(Auto-Scheduling)"]
     end
     
     LogicEngine --> Validation
     LogicEngine --> Tetris
     LogicEngine --> SmartAdd
+
+    %% Styling Definitions
+    classDef user fill:#000000,stroke:#333,stroke-width:2px,color:#fff
+    classDef client fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e
+    classDef server fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d
+    classDef storage fill:#fdf4ff,stroke:#d946ef,stroke-width:2px,stroke-dasharray: 5 5,color:#701a75
+    classDef logic fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#7c2d12
+
+    class User user
+    class Scheduler,State,DnD,LogicEngine client
+    class Layout,Meta server
+    class LocalStorage storage
+    class Validation,Tetris,SmartAdd logic
 ```
 
 ### Server vs. Client Split
