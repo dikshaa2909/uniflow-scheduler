@@ -28,28 +28,28 @@ This project strictly follows **Next.js App Router** best practices, separating 
 
 ```mermaid
 graph TD
-    User[User] --> LandingPage[Landing Page (/)]
-    User --> App[Scheduler App (/app)]
+    User[User] --> LandingPage["Landing Page (/)"]
+    User --> App["Scheduler App (/app)"]
 
     subgraph "Server Side (Next.js)"
         Layout[Root Layout]
-        Meta[Metadata & SEO]
+        Meta["Metadata & SEO"]
     end
 
     subgraph "Client Side (React)"
         Scheduler[SchedulerApp Component]
-        State[State Management (Events, View)]
+        State["State Management (Events, View)"]
         DnD[Dnd-Kit Context]
         
         Scheduler --> State
-        State -->|Persist| LocalStorage[(Browser Storage)]
+        State -->|Persist| LocalStorage["(Browser Storage)"]
         DnD -->|Drag Events| LogicEngine
     end
 
     subgraph "Logic Engine"
-        Validation[Conflict & Business Rules]
-        Tetris[Overlap/Width Calculation]
-        SmartAdd[Smart Slot Finder]
+        Validation["Conflict & Business Rules"]
+        Tetris["Overlap/Width Calculation"]
+        SmartAdd["Smart Slot Finder"]
     end
 ```
 
@@ -132,4 +132,4 @@ When you click "Add Study Block", the app acts as an intelligent agent:
 
 ---
 
-*Designed and Built by [Your Name]*
+*Designed and Built by Diksha Deware*
