@@ -27,30 +27,46 @@ This project strictly follows **Next.js App Router** best practices, separating 
 ### Architecture Diagram
 
 ```mermaid
-graph TD
-    User[User] --> LandingPage["Landing Page (/)"]
-    User --> App["Scheduler App (/app)"]
+flowchart TB
+    %% Styling Definitions
+    classDef user fill:#000000,stroke:#333,stroke-width:2px,color:#fff;
+    classDef client fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e;
+    classDef server fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d;
+    classDef storage fill:#fdf4ff,stroke:#d946ef,stroke-width:2px,shape:cylinder,color:#701a75;
+    classDef logic fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#7c2d12;
 
-    subgraph "Server Side (Next.js)"
-        Layout[Root Layout]
-        Meta["Metadata & SEO"]
+    User((User)) ::: user
+    
+    User -->|1. Visits| LandingPage["Landing Page (/)"]
+    User -->|2. Launches| App["Scheduler App (/app)"]
+
+    subgraph Server["🖥️ Server Side (Next.js)"]
+        direction TB
+        Layout[Root Layout]:::server
+        Meta["Metadata & SEO"]:::server
     end
 
-    subgraph "Client Side (React)"
-        Scheduler[SchedulerApp Component]
-        State["State Management (Events, View)"]
-        DnD[Dnd-Kit Context]
+    subgraph Client["⚡ Client Side (React)"]
+        direction TB
+        Scheduler[SchedulerApp Component]:::client
+        State["State Manager"]:::client
+        DnD[Dnd-Kit Context]:::client
         
         Scheduler --> State
-        State -->|Persist| LocalStorage["(Browser Storage)"]
+        State -.->|Auto-Save| LocalStorage[("Browser LocalStorage")]:::storage
         DnD -->|Drag Events| LogicEngine
     end
 
-    subgraph "Logic Engine"
-        Validation["Conflict & Business Rules"]
-        Tetris["Overlap/Width Calculation"]
-        SmartAdd["Smart Slot Finder"]
+    subgraph Logic["🧠 Logic Engine"]
+        direction TB
+        Validation["Rule Validation\n(Business Hours, Conflicts)"]:::logic
+        Tetris["Tetris Algorithm\n(Visual Overlaps)"]:::logic
+        SmartAdd["Smart Slot Finder\n(Auto-Scheduling)"]:::logic
     end
+    
+    LogicEngine --> Validation
+    LogicEngine --> Tetris
+    LogicEngine --> SmartAdd
 ```
 
 ### Server vs. Client Split
